@@ -28,7 +28,7 @@
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Write</a>
+              <a class="nav-link" href="/write">Write</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
@@ -48,12 +48,49 @@
       </div>
     </nav>
 
-    <!-- 서버에서 가져온 할일 리스트 -->
-    <% for (var i = 0; i < posts.length; i++) { %>
+    <h4 class="mx-2 my-3">서버에서 가져온 Todo 리스트</h4>
+    <!-- <% for (var i = 0; i < posts.length; i++) { %>
       <h4>할일 : <%= posts[i].TITLE %> <h4>
-      <P>일시 : <%= posts[i].DATE %></P>  
-    <% } %>
+      <P>일시 : <%= posts[i].DATE %></P>
+      <button>삭제</button>
+    <% } %> -->
 
+    <ul class="list-group">
+      <% for (var i = 0; i < posts.length; i++) { %>
+      <li class="list-group-item">
+        <p>게시글번호 : <%= posts[i]._id %></p>
+        <h4>할일 : <%= posts[i].TITLE %> <h4>
+        <P>일시 : <%= posts[i].DATE %></P>
+        <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
+      </li>
+      <% } %>
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+
+      $('.delete').click(function(e){
+        const postNumber = e.target.dataset.id;        
+        $.ajax({
+        method : 'DELETE',
+        url : '/delete',
+        data : {_id : postNumber}
+        }).done((result)=>{
+          // 페이지를 강제로 새로고침 해주세요 or 삭제버튼을 누른 요소를 제거해주세요 or 안보이게
+          console.log('성공했습니다.')
+          $(this).parent('li').fadeOut();
+           
+        }).fail(function(){ 
+ 
+        });
+      });
+    </script>
+
+    
+    
+
+  
   
         
 
