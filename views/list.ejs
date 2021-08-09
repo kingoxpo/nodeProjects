@@ -71,7 +71,8 @@
     <script>
 
       $('.delete').click(function(e){
-        const postNumber = e.target.dataset.id;        
+        const postNumber = e.target.dataset.id;
+        const clicked = $(this);
         $.ajax({
         method : 'DELETE',
         url : '/delete',
@@ -79,18 +80,13 @@
         }).done((result)=>{
           // 페이지를 강제로 새로고침 해주세요 or 삭제버튼을 누른 요소를 제거해주세요 or 안보이게
           console.log('성공했습니다.')
-          $(this).parent('li').fadeOut();
+          clicked.parent('li').fadeOut();
            
         }).fail(function(){ 
  
         });
       });
     </script>
-
-    
-    
-
-  
   
         
 
