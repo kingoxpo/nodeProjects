@@ -78,16 +78,15 @@
         url : '/delete',
         data : {_id : postNumber}
         }).done((result)=>{
-          // 페이지를 강제로 새로고침 해주세요 or 삭제버튼을 누른 요소를 제거해주세요 or 안보이게
-          console.log('성공했습니다.')
+          // 삭제버튼을 누른 요소를 지움
+          console.log('DELETE SUCCESS')
           clicked.parent('li').fadeOut();
-           
-        }).fail(function(){ 
- 
+          
+        }).fail(function(xhr, textStatus, errorThrown){
+          console.log(xhr, textStatus, errorThrown);
         });
       });
     </script>
-  
         
 
 
