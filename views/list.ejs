@@ -69,10 +69,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-
       $('.delete').click(function(e){
         const postNumber = e.target.dataset.id;
-        const clicked = $(this);
+        const clicked = $(this).closest('li');
         $.ajax({
         method : 'DELETE',
         url : '/delete',
@@ -80,16 +79,15 @@
         }).done((result)=>{
           // 삭제버튼을 누른 요소를 지움
           console.log('DELETE SUCCESS')
-          clicked.parent('li').fadeOut();
-          
+          clicked.fadeOut();
         }).fail(function(xhr, textStatus, errorThrown){
           console.log(xhr, textStatus, errorThrown);
         });
       });
     </script>
+
+    
         
-
-
 
     <!-- Optional JavaScript; choose one of the two! -->
     <!-- Option 1: Bootstrap Bundle with Popper -->
