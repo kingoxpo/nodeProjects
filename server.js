@@ -24,8 +24,8 @@ app.get('/write', function(request, response){
 
 // ▼ 누군가 form에서 /add로 post 요청을 하면 (request.body에 게시물 데이터를 가져옴)
 app.post('/add', function(request, response){ 
-  console.log(request.body.title);
-  console.log(request.body.date);
+  // console.log(request.body.title);
+  // console.log(request.body.date);
   response.send('전송완료');
   // ▼ DB의 counter라는 콜렉션의 postNumber를 찾음.(게시물개수에 따라 1증가 시키는 파일)
   db.collection("counter").findOne({ name: 'postNumber'}, function(err,result){ 
@@ -62,6 +62,7 @@ app.delete('/delete', function(request,response){
 
 app.get('detail/:id', function(request,response){
   db.collection('post').findOne({_id: parseInt(request.params.id)}, function(err,result){
-    response.render('detail.ejs', {data:result})
+    console.log(result);
+    response.render('detail.ejs', { data : result });
   })
 });
