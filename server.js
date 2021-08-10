@@ -50,13 +50,18 @@ app.get('/list', function(request, response){
   });  
 })
 
-  app.delete('/delete', function(request,response){
-    console.log(request.body)
-    request.body._id = parseInt(request.body._id)
-    // 삭제버튼을 클릭하면 서버에 해당 글을 삭제요청 함
-    db.collection('post').deleteOne(request.body, function(err,result){
-      console.log(err,'삭제완료');
-      response.status(200).send({message : '성공했습니다.'});
-    })
+app.delete('/delete', function(request,response){
+  console.log(request.body)
+  request.body._id = parseInt(request.body._id)
+  // 삭제버튼을 클릭하면 서버에 해당 글을 삭제요청 함
+  db.collection('post').deleteOne(request.body, function(err,result){
+    console.log(err,'삭제완료');
+    response.status(200).send({message : '성공했습니다.'});
   })
-  
+})
+
+app.get('detail/:id', function(request,response){
+  db.collection('post').findOne({_id: parseInt(request.params.id)}, function(err,result){
+    response.render('detail.ejs', {data:result})
+  })
+});
