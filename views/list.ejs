@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- 링크에 밑줄 없애기 -->
+    <style type="text/css">a:link { color: red; text-decoration: none;}a:visited { color: black; text-decoration: none;}a:hover { color: blue; text-decoration: underline;}</style>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,7 +52,7 @@
       <% for (var i = 0; i < posts.length; i++) { %>
       <li class="list-group-item">
         <p>게시글번호 : <%= posts[i]._id %></p>
-        <h4>할일 : <%= posts[i].TITLE %> <h4>
+        <a href ="/detail/<%= posts[i]._id %>"><h4>할일 : <%= posts[i].TITLE %><h4></a>
         <P>일시 : <%= posts[i].DATE %></P>
         <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
       </li>
