@@ -6,12 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="/public/main.css">
 
     <title>aiden</title>
   </head>
@@ -48,10 +44,25 @@
       </div>
     </nav>
 
-    <h4>상세페이지</h4>
 
-    <h4>제목: <%= data.TITLE %></h4>
-    <h4>날짜: <%= data.DATE %></h4>
+    <div class="container mt-4">
+      <h4 class="text-center">상세페이지</h4>
+      <div class="card" style="width: 100%;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><%= data.TITLE %></h5>
+          <p class="card-text"><%= data.DATE %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">An item</li>
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+
 
 
     <!-- Optional JavaScript; choose one of the two! -->

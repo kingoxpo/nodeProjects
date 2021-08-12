@@ -3,7 +3,8 @@ const express = require("express");
 const app = express();
 app.use(express.urlencoded({extended: true})) 
 const MongoClient = require("mongodb").MongoClient;
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+app.use('/public', express.static(__dirname + '/public'));
 
 var db;
 
@@ -61,8 +62,11 @@ app.delete('/delete', function(request,response){
 })
 
 app.get('/detail/:id', function(request,response){
-  db.collection('post').findOne({_id: parseInt(request.params.id)},function(err, result){
-    response.render('detail.ejs', {data : result})
-    response.status(500).send({massage : '실패했습니다.'});
-  })
+  db.collection('post').findOne({_id: parseInt(request.params.id)},function(err, result){        
+      if (!result) {
+        response.status(500).send({massage : '실패했습니다.'});
+        return;
+      }
+      response.render('detail.ejs', {data : result})
+    })
 });
