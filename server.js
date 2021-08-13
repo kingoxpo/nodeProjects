@@ -75,9 +75,15 @@ app.delete('/delete', function(request,response){
 app.get('/detail/:id', function(request,response){
   db.collection('post').findOne({_id: parseInt(request.params.id)},function(err, result){        
       if (!result) {
-        response.status(500).send({massage : '실패했습니다.'});
+        response.status(500).send({massage : '해당 페이지는 없습니다.'});
         return;
       }
       response.render('detail.ejs', {data : result})
     })
+});
+
+app.get('/edit/:id', function(request, response){
+  db.collection('post').findOne({_id: parseInt(request.params.id)}, function(err,result){
+    response.render('edit.ejs')
+  })
 });
