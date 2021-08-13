@@ -2,62 +2,39 @@
 <html>
   <head>
     <!-- 링크에 밑줄 없애기 -->
-    <style type="text/css">a:link { color: red; text-decoration: none;}a:visited { color: black; text-decoration: none;}a:hover { color: blue; text-decoration: underline;}</style>
+    <style type="text/css">a:link { color: black; text-decoration: none;}a:visited { color: black; text-decoration: none;}a:hover { color: blue; text-decoration: underline;}</style>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+    
+    <link rel="stylesheet" href="/public/main.css">
 
     <title>aiden</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Todo App</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="/write">Write</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-          </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </nav>
+    <%- include('nav.html') %>
 
-    <h4 class="mx-2 my-3">서버에서 가져온 Todo 리스트</h4>
+    <h4 class="mx-2 my-3 text-center">서버에서 가져온 Todo 리스트</h4>
     <!-- <% for (var i = 0; i < posts.length; i++) { %>
       <h4>할일 : <%= posts[i].TITLE %> <h4>
       <P>일시 : <%= posts[i].DATE %></P>
       <button>삭제</button>
     <% } %> -->
-
-    <ul class="list-group">
-      <% for (var i = 0; i < posts.length; i++) { %>
-      <li class="list-group-item">
-        <p>게시글번호 : <%= posts[i]._id %></p>
-        <a href ="/detail/<%= posts[i]._id %>"><h4>할일 : <%= posts[i].TITLE %><h4></a>
-        <P>일시 : <%= posts[i].DATE %></P>
-        <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
-      </li>
-      <% } %>
-    </ul>
+    <div class="container">
+      <ul class="list-group">
+        <% for (var i = 0; i < posts.length; i++) { %>
+        <li class="list-group-item">
+          <p>게시글번호 : <%= posts[i]._id %></p>
+          <a href ="/detail/<%= posts[i]._id %>"><h4>할일 : <%= posts[i].TITLE %><h4></a>
+          <P>일시 : <%= posts[i].DATE %></P>
+          <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
+        </li>
+        <% } %>
+      </ul>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

@@ -19,9 +19,20 @@ MongoClient.connect("mongodb+srv://aiden:tnsqhr8516@cluster0.lowzd.mongodb.net/t
   }
 );
 
+// app.get('/', function(request, response){
+//   response.sendFile(__dirname + '/views/index.ejs')
+// })
+// app.get('/write', function(request, response){
+//   response.sendFile(__dirname + '/views/write.ejs')
+// })
+
+app.get('/', function(request, response){
+  response.render('index.ejs')
+});
+
 app.get('/write', function(request, response){
-  response.sendFile(__dirname + '/write.html')
-})
+  response.render('write.ejs')
+});
 
 // ▼ 누군가 form에서 /add로 post 요청을 하면 (request.body에 게시물 데이터를 가져옴)
 app.post('/add', function(request, response){ 
