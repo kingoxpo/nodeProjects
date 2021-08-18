@@ -31,7 +31,9 @@
           <a href ="/detail/<%= posts[i]._id %>"><h4>할일 : <%= posts[i].TITLE %><h4></a>
           <P>일시 : <%= posts[i].DATE %></P>
           <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
-          <button class="btn btn-outline-primary edit" type="button" data-id="<%= posts[i]._id %>">수정</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
+
+          <!-- 수정을 클릭하면 해당 게시글의 edit페이지로 가야함 -->
+          <button class="btn btn-outline-primary edit" type="button" data-id="<%= posts[i]._id %>" onclick="location.href='/edit/<%= posts[i]._id %>'">수정</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
         </li>
         <% } %>
       </ul>

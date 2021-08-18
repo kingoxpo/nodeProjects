@@ -1,10 +1,13 @@
-const { request, response } = require("express");
+const { request,response } = require("express");
 const express = require("express");
 const app = express();
 app.use(express.urlencoded({extended: true})) 
 const MongoClient = require("mongodb").MongoClient;
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
+
 
 var db;
 
@@ -84,6 +87,22 @@ app.get('/detail/:id', function(request,response){
 
 app.get('/edit/:id', function(request, response){
   db.collection('post').findOne({_id: parseInt(request.params.id)}, function(err,result){
-    response.render('edit.ejs', { data: result})
+    if (!result) {
+      response.status(500).send({massage : '해당 페이지는 없습니다.'});
+      return;
+    }
+    response.render('edit.ejs', { post: result})
+  })
+});
+
+app.put('/edit', function(request, response){
+  // 폼에 담긴 제목, 날짜데이터를 가지고 db.collection에 업데이트함
+  db.collection('post').updateOne({_id: parseInt(request.body.id)}, {$set : {TITLE: request.body.title, DATE: request.body.date}}, function(err,result){
+    if (!result) {
+      response.status(500).send({message: '연결에 실패했습니다.'});
+      return;      
+    }
+    console.log("수정완료");
+    response.redirect('/list')
   })
 });
