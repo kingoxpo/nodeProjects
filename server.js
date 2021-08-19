@@ -106,3 +106,16 @@ app.put('/edit', function(request, response){
     response.redirect('/list')
   })
 });
+
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+app.use(session({secret : 'secret-code', resave : true, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.post('/login', function(request,response){
+  response.render('login.ejs')
+});
