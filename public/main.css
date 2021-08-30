@@ -1,3 +1,33 @@
 h4 {
     font-family: 'nanumsquare';
 }
+.loginpage{
+    margin:0 auto;width:476px;padding-top:72px;color:#212121;
+}
+.loginpage_box{
+    margin-top:0;margin-left:0;padding:34px 80px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);border-radius:4px
+}
+.loginpage_form_row{
+    display:block;margin-bottom:20px;
+}
+.loginpage_form_login{
+    display:block;margin-bottom:20px;text-align:center;
+}
+.loginpage_form_submit{
+    font-size:16px;color:#fff;width:184px;text-align:center;padding:6px 0;text-shadow:0 0 6 pxrgba(255,255,255,.5);border-radius:4px;border:0;background:linear-gradient(0deg,#0073e9 0,#008fe9);box-shadow:0 4px 15px 3px rgba(0,155,233,.23)
+}
+.loginpage_find{
+    margin-top:16px;font-size:12px;
+}
+.loginpage_find a{
+    color:#0073e8;padding:12px;
+}
+a{
+    color:#4da4e0;text-decoration:none;
+}
+a:hover,a:focus{
+    color:#217fbf;text-decoration:underline;
+}
+a:focus{
+    outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;
+}
