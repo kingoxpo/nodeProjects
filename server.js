@@ -7,16 +7,16 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
-
+require('dotenv').config()
 
 var db;
 
-MongoClient.connect("mongodb+srv://aiden:tnsqhr8516@cluster0.lowzd.mongodb.net/todoapp?retryWrites=true&w=majority", { useUnifiedTopology: true }, (err, client)=>{
+MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (err, client)=>{
   if(err) return console.error('MongoDB 연결 실패', err);
     
     db = client.db("todoapp");
 
-    app.listen(8080, ()=>{
+    app.listen(process.env.PORT, ()=>{
       console.log("listening on 8080");
     });
   }
@@ -124,18 +124,19 @@ app.get('/login', (request,response)=>{
 app.post('/login', passport.authenticate('local', {
   failureRedirect : '/fail'
 }), (request,response)=>{
-  response.redirect('/')
+  response.redirect('/mypage')
 })
 
 app.get('/mypage', loginCheck, function(request,response){
-  response.render('mypage.ejs')
-})
+    console.log(request.user);
+    response.render('mypage.ejs', {loginInfo : request.user})
+});
 
 function loginCheck(request, response, next){
   if (request.user){
     next()
   } else {
-    response.send('로그인 해주세요.')
+    response.send('로그인 해주세요.')    
   }
 }
 
@@ -162,8 +163,10 @@ passport.use(new LocalStrategy({
 passport.serializeUser(function(user,done){
   done(null, user.id)
 });
-passport.deserializeUser(function(아이디, done){
-  done(null, {})
+passport.deserializeUser(function(emailId, done){
+  db.collection('login').findOne({id : emailId}, function(err,result){
+    done(null, result)  
+  })
 });
 
 app.get('/fail', (request, response)=>{

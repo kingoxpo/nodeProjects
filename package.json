@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
@@ -19,7 +20,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "to": "^0.2.9",
-    "update": "^0.4.2"
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0"
