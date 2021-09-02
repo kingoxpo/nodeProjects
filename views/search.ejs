@@ -15,14 +15,10 @@
     <title>aiden</title>
   </head>
   <body>
+
     <%- include('nav.html') %>
 
     <h4 class="mx-2 my-3 text-center">서버에서 가져온 Todo 리스트</h4>
-    <!-- <% for (var i = 0; i < posts.length; i++) { %>
-      <h4>할일 : <%= posts[i].TITLE %> <h4>
-      <P>일시 : <%= posts[i].DATE %></P>
-      <button>삭제</button>
-    <% } %> -->
     <div class="container input-group mb-2">
       <input class="form-control" id="search-input">
       <button class="input-group-append btn btn-danger" id="search">검색</button>
@@ -38,19 +34,21 @@
     </script>
 
     <div class="container">
-      <ul class="list-group">
-        <% for (var i = 0; i < posts.length; i++) { %>
-        <li class="list-group-item">
-          <p>게시글번호 : <%= posts[i]._id %></p>
-          <a href ="/detail/<%= posts[i]._id %>"><h4>할일 : <%= posts[i].TITLE %><h4></a>
-          <P>일시 : <%= posts[i].DATE %></P>
-          <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
+      <form action="/search?_method=PUT" method="POST" >
+        <ul class="list-group">
+          <% for (var i = 0; i < posts.length; i++) { %>
+          <li class="list-group-item">
+            <p>게시글번호 : <%= posts[i]._id %></p>
+            <a href ="/detail/<%= posts[i]._id %>"><h4>할일 : <%= posts[i].TITLE %><h4></a>
+            <P>일시 : <%= posts[i].DATE %></P>
+            <button class="btn btn-outline-danger delete" type="button" data-id="<%= posts[i]._id %>">삭제</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
 
-          <!-- 수정을 클릭하면 해당 게시글의 edit페이지로 가야함 -->
-          <button class="btn btn-outline-primary edit" type="button" data-id="<%= posts[i]._id %>" onclick="location.href='/edit/<%= posts[i]._id %>'">수정</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
-        </li>
-        <% } %>
-      </ul>
+            <!-- 수정을 클릭하면 해당 게시글의 edit페이지로 가야함 -->
+            <button class="btn btn-outline-primary edit" type="button" data-id="<%= posts[i]._id %>" onclick="location.href='/edit/<%= posts[i]._id %>'">수정</button><!-- 삭제버튼에 데이터아이디 숨겨넣기 -->
+          </li>
+          <% } %>
+        </ul>
+      </form>
     </div>
 
     <script>
