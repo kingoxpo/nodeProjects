@@ -66,18 +66,22 @@ app.get('/list', (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-  // console.log(req.query.value);
-  const searchCri = [
+  var searchCri = [
     {
       $search: {
         index: 'titleSearch',
         text: {
           query: req.query.value,
-          paht: "TITLE" // TITLE, DATE 둘다 찾고 싶으면 ['TITLE', 'DATE']
+          path: ['TITLE','DATE'] // TITLE, DATE 둘다 찾고 싶으면 ['TITLE', 'DATE']
         }
       }
     }
+    // { $sort : { _id : -1} }, // 최신순 정렬(현재 DATE 형태가 제대로 안들어가있어 _id 생성일자 순으로 정리)
+    // { $limit : 10 }, // 개수표시 제한 
+    // { $project : { TITLE : 1, DATE : 1, _id: 0, score: { $meta: "searchScore"} } } // 원하는 값만 보여주고싶을때 1, 비노출 0, (프로젝터 역할)
   ]
+
+  console.log(req.query);
   db.collection('post').aggregate(searchCri).toArray((err,result)=>{
     console.log(result);
     res.render('search.ejs', {posts : result});
@@ -136,7 +140,7 @@ app.use(session({secret : 'secret-code', resave : true, saveUninitialized: false
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/login', (req,res)=>{
+app.get('/login', (req, res) => {
   res.render('login.ejs')
 })
 
@@ -144,6 +148,10 @@ app.post('/login', passport.authenticate('local', {
   failureRedirect : '/fail'
 }), (req,res)=>{
   res.redirect('/mypage')
+})
+
+app.get('/register', (req, res) => {  
+  res.render('register.ejs');  
 })
 
 app.get('/mypage', loginCheck, (req,res)=>{
@@ -187,6 +195,12 @@ passport.deserializeUser((emailId, done)=>{
     done(null, result)  
   })
 });
+
+app.post('/register', function(req,res){
+  db.collection('login').insertOne( { id : req.body.id, pw : req.body.pw }, function(err,result){
+    res.redirect('/')
+  })
+})
 
 app.get('/fail', (req, res)=>{
   res.send({message : "오류가 발생했습니다. 다시 접속바랍니다."})
