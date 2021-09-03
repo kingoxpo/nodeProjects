@@ -59,24 +59,33 @@ app.post('/add', (req, res)=>{
   })
 });
 
-app.get('/list', (req, res)=>{
+app.get('/list', (req, res) => {
   db.collection('post').find().toArray((err,result)=>{
     res.render('list.ejs', {posts : result});
   });  
 })
 
-app.get('/search', (req, res)=>{
-  console.log(req.query.value);
-  db.collection('post').find( { $text: { $search: req.query.value } } ).toArray((err,result)=>{
+app.get('/search', (req, res) => {
+  // console.log(req.query.value);
+  const searchCri = [
+    {
+      $search: {
+        index: 'titleSearch',
+        text: {
+          query: req.query.value,
+          paht: "TITLE" // TITLE, DATE 둘다 찾고 싶으면 ['TITLE', 'DATE']
+        }
+      }
+    }
+  ]
+  db.collection('post').aggregate(searchCri).toArray((err,result)=>{
     console.log(result);
     res.render('search.ejs', {posts : result});
   })
 })
 
 
-
-
-app.delete('/delete', (req,res)=>{
+app.delete('/delete', (req,res) => {
   console.log(req.body)
   req.body._id = parseInt(req.body._id)
   // 삭제버튼을 클릭하면 서버에 해당 글을 삭제요청 함
@@ -86,7 +95,7 @@ app.delete('/delete', (req,res)=>{
   })
 })
 
-app.get('/detail/:id', (req,res)=>{
+app.get('/detail/:id', (req,res) => {
   db.collection('post').findOne({_id: parseInt(req.params.id)},(err, result)=>{        
       if (!result) {
         res.status(500).send({massage : '해당 페이지는 없습니다.'});
@@ -96,7 +105,7 @@ app.get('/detail/:id', (req,res)=>{
     })
 });
 
-app.get('/edit/:id', (req, res)=>{
+app.get('/edit/:id', (req, res) => {
   db.collection('post').findOne({_id: parseInt(req.params.id)}, (err,result)=>{
     if (!result) {
       res.status(500).send({massage : '해당 페이지는 없습니다.'});
@@ -106,7 +115,7 @@ app.get('/edit/:id', (req, res)=>{
   })
 });
 
-app.put('/edit', (req, res)=>{
+app.put('/edit', (req, res) => {
   // 폼에 담긴 제목, 날짜데이터를 가지고 db.collection에 업데이트함
   db.collection('post').updateOne({_id: parseInt(req.body.id)}, {$set : {TITLE: req.body.title, DATE: req.body.date}}, function(err,result){
     if (!result) {
