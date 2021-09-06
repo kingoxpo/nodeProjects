@@ -197,7 +197,7 @@ passport.deserializeUser((emailId, done)=>{
 });
 
 app.post('/register', function(req,res){
-  db.collection('login').insertOne( { id : req.body.id, pw : req.body.pw }, function(err,result){
+  db.collection('login').insertOne( { id : req.body.emailId, pw : req.body.pw }, function(err,result){
     res.redirect('/')
   })
 })
