@@ -206,8 +206,29 @@ app.get('/detail/:id', (req,res) => {
     })
 });
 
-
-
 app.get('/fail', (req, res)=>{
   res.send({message : "오류가 발생했습니다. 다시 접속바랍니다."})
+});
+
+app.use('/shop', require('./routs/shop.js'));
+app.use('/account/sub', require('./routs/account.js'));
+
+let multer = require('multer');
+const storage = multer.diskStorage({
+  destination : function(req, file, cb){
+    cb(null, './public/image')
+  },
+  filename : function(req, file, cb){
+    cb(null, file.originalname)
+  }
+});
+
+const upload = multer({storage : storage});
+
+app.get('/upload', function(req,res){
+  res.render('upload.ejs');
+});
+
+app.post('/upload', upload.single('picture'), function(req, res){
+  res.send("업로드 완료");
 });

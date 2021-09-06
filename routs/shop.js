@@ -1,12 +1,12 @@
 const router = require('express').Router();
 
 
-router.get('/shop/shirts', function(req,res){
-    res.send('It`s a shirt-selling page')
+router.get('/cosmetics', function(req,res){
+    res.send('화장품 페이지')
 })
   
-router.get('/shop/trousers', function(req,res){
-    res.send('It`s a trouser-selling page')
+router.get('/luxury', function(req,res){
+    res.send('럭셔리 페이지')
 })
 
 module.exports = router;
