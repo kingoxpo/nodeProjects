@@ -1,12 +1,20 @@
-const { req,res } = require("express");
+const { req,res, application } = require("express");
 const express = require("express");
+const helmet = require("helmet");
 const app = express();
+const http = require('http').createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(http);
 app.use(express.urlencoded({extended: true})) 
 const MongoClient = require("mongodb").MongoClient;
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
+app.use(helmet());
+
+
+
 require('dotenv').config()
 
 var db;
@@ -16,7 +24,7 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (err, clie
     
     db = client.db("todoapp");
 
-    app.listen(process.env.PORT, ()=>{
+    http.listen(process.env.PORT, ()=>{
       console.log("listening on 8080");
     });
   }
@@ -163,7 +171,6 @@ app.post('/add', (req, res)=>{
   // console.log(req.body.title);
   // console.log(req.body.date);
   // res.send('전송완료');
-  res.redirect('/list')
   // ▼ DB의 counter라는 콜렉션의 postNumber를 찾음.(게시물개수에 따라 1증가 시키는 파일)
   db.collection("counter").findOne({ name: 'postNumber'}, (err,result)=>{ 
     console.log(result.totalPost)
@@ -177,6 +184,7 @@ app.post('/add', (req, res)=>{
         if(err){return console.log('totalPost 연결 실패',err)}
       })
     });
+    res.redirect('/list')
   })
 });
 
@@ -185,14 +193,15 @@ app.delete('/delete', (req,res) => {
   req.body._id = parseInt(req.body._id)
   // ▼ 로그인 사용자와 작성자가 일치하는지 체크, 일치해야만 삭제가능
   const deleteData = { _id : req.body._id, author : req.user._id}
+  
 
   // 삭제버튼을 클릭하면 서버에 해당 글을 삭제요청 함
   db.collection('post').deleteOne(deleteData, (err,result)=>{
     console.log(err,'삭제완료');
     if (result) {
       console.log(result)
+      res.status(200).send({message : '성공했습니다.'});
     }
-    res.status(200).send({message : '성공했습니다.'});
   })
 })
 
@@ -213,8 +222,9 @@ app.get('/fail', (req, res)=>{
 app.use('/shop', require('./routs/shop.js'));
 app.use('/account/sub', require('./routs/account.js'));
 
-let multer = require('multer');
+const multer = require('multer');
 const storage = multer.diskStorage({
+
   destination : function(req, file, cb){
     cb(null, './public/image')
   },
@@ -223,12 +233,38 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({storage : storage});
+const path = require('path');
+
+const upload = multer({
+  storage : storage,
+  filefilter : function(req, file,cb){
+    const ext = path.extname(file.originalname);
+    if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg'){
+      return cb(new Error('PNG, JPG 파일만 업로드해주세요.'))
+    }
+    cb(null, true)
+},
+limits:{
+  fileSize: 10240 * 10240
+}
+});
 
 app.get('/upload', function(req,res){
   res.render('upload.ejs');
 });
 
-app.post('/upload', upload.single('picture'), function(req, res){
+app.post('/upload', upload.array('picture', 10), function(req, res){
   res.send("업로드 완료");
+});
+
+app.get('/image/:imageName', (req, res)=>{
+  res.sendFile( __dirname + '/public/image/' + req.params.imageName )
+})
+
+app.get('/chat', (req, res) => {
+  res.render('chat.ejs')
+});
+
+io.on('connection', function(){
+  console.log('연결되었습니다');
 });

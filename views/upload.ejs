@@ -18,12 +18,11 @@
     <%- include('nav.html') %>
 
     <div class="container mt-4">
-        <div class="container mt-3">
-            <form method="POST" action="/upload" enctype="multipart/form-data">
-                <input type="file" name="picture">
-                <button type="submit">전송</button>
-            </form> 
-        </div>
+        <h4 class="text-center mb-3">업로드페이지</h4>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <input type="file" multiple name="picture">
+            <button type="submit">전송</button>
+        </form> 
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
