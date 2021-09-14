@@ -12,8 +12,6 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
-
-
 require('dotenv').config()
 
 var db;
@@ -23,7 +21,7 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (err, clie
     
     db = client.db("todoapp");
 
-    http.listen(process.env.PORT, ()=>{
+    app.listen(process.env.PORT, ()=>{
       console.log("listening on 8080");
     });
   }
