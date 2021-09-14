@@ -1,18 +1,17 @@
 const { req,res, application } = require("express");
 const express = require("express");
-const helmet = require("helmet");
 const app = express();
+
 const http = require('http').createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(http);
+
 app.use(express.urlencoded({extended: true})) 
 const MongoClient = require("mongodb").MongoClient;
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
-app.use(helmet());
-
 
 
 require('dotenv').config()
