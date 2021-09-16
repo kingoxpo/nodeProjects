@@ -6,35 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
 
     <title>aiden</title>
   </head>
   <body>
     <%- include('nav.html') %>
     
-    <h4 class="m-5 text-center">고객센터</h4>
-
-
+    <h4 class="m-5 text-center">실시간 채팅</h4>
 
     <!-- Optional JavaScript; choose one of the two! -->
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js" integrity="sha512-WL6WGKMPBiM9PnHRYIn5YEtq0Z8XP4fkVb4qy7PP4vhmYQErJ/dySyXuFIMDf1eEYCXCrQrMJfkNwKc9gsjTjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        const socket = io();
 
-        socket.emit('인삿말', 'hello');
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js" integrity="sha512-WL6WGKMPBiM9PnHRYIn5YEtq0Z8XP4fkVb4qy7PP4vhmYQErJ/dySyXuFIMDf1eEYCXCrQrMJfkNwKc9gsjTjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <ul class="list-group" style="height : 300px; overflow-y: scroll;">
+        <li class="list-group-item">채팅메세지는 여기에 표시됩니다</li>
+    </ul> 
+
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="main-input" placeholder="메시지를 입력하세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" text-align="right" type="button" id="button-addon2">전송</button>
+    </div>
+
+    <div class="container">
+        <button type="button" class="btn btn-outline-primary mx-auto d-block w-100 mt-1" id="join1">채팅방1</button>
+        <button type="button" class="btn btn-outline-secondary mx-auto d-block w-100 mt-1" id="join2">채팅방2</button>
+        <button type="button" class="btn btn-outline-success mx-auto d-block w-100 mt-1" id="join3">채팅방3</button>
+        <!-- <button type="button" class="btn btn-outline-danger" id="join4">채팅방4</button> -->
+    </div>
+    <script>
+    var socket = io('/chatroomNo1');
+
+    $('.mt-1').eq(0).click(function(){
+        socket.emit('joinRoom', 'room1')
+    });
+    
+    $('.mt-1').eq(1).click(function(){
+        socket.emit('joinRoom', 'room2')
+    });
+
+    $('.mt-1').eq(2).click(function(){
+        socket.emit('joinRoom', 'room3')
+    });
+    
+
+    $('#button-addon2').click(function(){
+        socket.emit('chatMessage', $('#main-input').val());        
+       });
+
+       socket.on('public', function(data){
+        $('.list-group').append('<li class="list-group-item">'+ data +'</li>');
+        $('.list-group').scrollTop( $('.list-group').prop('scrollHeight') );
+       });
+
     </script>
+
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     -->
   </body>
 </html>
+
