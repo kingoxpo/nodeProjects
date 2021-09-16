@@ -21,7 +21,7 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (err, clie
     
     db = client.db("todoapp");
 
-    app.listen(process.env.PORT, ()=>{
+    http.listen(process.env.PORT, ()=>{
       console.log("listening on 8080");
     });
   }
@@ -264,4 +264,18 @@ app.get('/chat', (req, res) => {
 
 io.on('connection', function(){
   console.log('연결되었습니다');
+});
+
+var chat1 = io.of('/chatroomNo1');
+chat1.on('connection', function(socket){
+
+  var roomNo = '';
+  socket.on('joinRoom', function(data){
+    socket.join(data);
+    roomNo = data;
+  });
+  socket.on('chatMessage', function(data){
+    console.log(data);
+    chat1.to(roomNo).emit('public', data);
+  });
 });
