@@ -162,17 +162,35 @@ app.post('/register', function(req,res){
     res.redirect('/')
   })
 })
-
+// 로그인해야 글이 작성가능한 코드
 // ▼ 누군가 form에서 /add로 post 요청을 하면 (req.body에 게시물 데이터를 가져옴)
+// app.post('/add', (req, res)=>{ 
+//   console.log(req.user._id);
+//   // console.log(req.body.date);
+//   // res.send('전송완료');
+//   // ▼ DB의 counter라는 콜렉션의 postNumber를 찾음.(게시물개수에 따라 1증가 시키는 파일)
+//   db.collection("counter").findOne({ name: 'postNumber'}, (err,result)=>{ 
+//     // console.log(result.totalPost)
+//     const totalPostNumber = result.totalPost;
+//     const contents = {  _id: totalPostNumber + 1, author: req.user._id, TITLE: req.body.title, DATE: req.body.date }
+//     // ▼ post컬렉션에 게시물이 추가되면 게시물당 _ID를 totalPostNumber로 1씩 증가시키고 제목, 날짜 오브젝트를 추가함
+//     db.collection("post").insertOne(contents, (err, result)=>{ 
+//       console.log("saved!");
+//       // ▼ counter라는 콜렉션에 있는 totalPost라는 항목 또한 1씩 증가시킴(그래야 다음 게시물을 작성할때 counter의 콜렉션에 추가된 개수를 참고하여 ID에 1씩 증가시킴)
+//       db.collection("counter").updateOne({name: 'postNumber'}, { $inc : {totalPost:1} }, (err,result)=>{ //
+//         if(err){return console.log('totalPost 연결 실패',err)}
+//       })
+//     });
+//     res.redirect('/list')
+//   })
+// });
+
+// 아무나 작성 가능
 app.post('/add', (req, res)=>{ 
-  // console.log(req.body.title);
-  // console.log(req.body.date);
-  // res.send('전송완료');
-  // ▼ DB의 counter라는 콜렉션의 postNumber를 찾음.(게시물개수에 따라 1증가 시키는 파일)
   db.collection("counter").findOne({ name: 'postNumber'}, (err,result)=>{ 
     console.log(result.totalPost)
     const totalPostNumber = result.totalPost;
-    const contents = {  _id: totalPostNumber + 1, author : req.user._id, TITLE: req.body.title, DATE: req.body.date }
+    const contents = {  _id: totalPostNumber + 1, TITLE: req.body.title, DATE: req.body.date }
     // ▼ post컬렉션에 게시물이 추가되면 게시물당 _ID를 totalPostNumber로 1씩 증가시키고 제목, 날짜 오브젝트를 추가함
     db.collection("post").insertOne(contents, (err, result)=>{ 
       console.log("saved!");
@@ -189,8 +207,9 @@ app.delete('/delete', (req,res) => {
   console.log(req.body)
   req.body._id = parseInt(req.body._id)
   // ▼ 로그인 사용자와 작성자가 일치하는지 체크, 일치해야만 삭제가능
-  const deleteData = { _id : req.body._id, author : req.user._id}
-  
+  // const deleteData = { _id : req.body._id, author : req.user._id}
+  // ▼ 아무나 삭제가능
+  const deleteData = { _id : req.body._id}
 
   // 삭제버튼을 클릭하면 서버에 해당 글을 삭제요청 함
   db.collection('post').deleteOne(deleteData, (err,result)=>{
